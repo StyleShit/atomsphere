@@ -1,10 +1,23 @@
-export type Atom<T> = {
+export type ReadableAtom<T> = {
 	get: () => T;
-	set: (newValue: T | ((prev: T) => T)) => void;
 	subscribe: (subscriber: () => void) => () => void;
 };
 
-export function atom<T>(initialValue: T): Atom<T> {
+export type WritableAtom<T> = ReadableAtom<T> & {
+	set: (newValue: T | ((prev: T) => T)) => void;
+};
+
+type DerivedGetter = <T>(atom: ReadableAtom<T>) => T;
+
+export function atom<T>(derive: (get: DerivedGetter) => T): ReadableAtom<T>;
+export function atom<T>(initialValue: T): WritableAtom<T>;
+export function atom<T>(initialValue: T | ((get: DerivedGetter) => T)) {
+	return typeof initialValue === 'function'
+		? createDerivedAtom(initialValue as (get: DerivedGetter) => T)
+		: createAtom(initialValue);
+}
+
+function createAtom<T>(initialValue: T): WritableAtom<T> {
 	let value = initialValue;
 
 	const subscribers = new Set<() => void>();
@@ -36,5 +49,26 @@ export function atom<T>(initialValue: T): Atom<T> {
 		get,
 		set,
 		subscribe,
+	};
+}
+
+function createDerivedAtom<T>(
+	derive: (get: DerivedGetter) => T,
+): ReadableAtom<T> {
+	const getAndSubscribe = <T>(atom: ReadableAtom<T>) => {
+		atom.subscribe(reCalculate);
+
+		return atom.get();
+	};
+
+	const reCalculate = () => {
+		atom.set(derive(getAndSubscribe));
+	};
+
+	const atom = createAtom(derive(getAndSubscribe));
+
+	return {
+		get: atom.get,
+		subscribe: atom.subscribe,
 	};
 }

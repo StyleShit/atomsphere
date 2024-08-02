@@ -1,9 +1,19 @@
 import { useSyncExternalStore } from 'react';
-import type { Atom } from './atom';
+import type { WritableAtom, ReadableAtom } from './atom';
 
-export function useAtom<T>(atom: Atom<T>) {
+export function useAtom<T>(
+	atom: WritableAtom<T>,
+): [WritableAtom<T>['get'], WritableAtom<T>['set']];
+
+export function useAtom<T>(atom: ReadableAtom<T>): ReadableAtom<T>['get'];
+
+export function useAtom<T>(atom: WritableAtom<T> | ReadableAtom<T>): any {
+	const isDerivedAtom = !('set' in atom);
 	const value = useSyncExternalStore(atom.subscribe, atom.get);
-	const setValue = atom.set;
 
-	return [value, setValue] as const;
+	if (isDerivedAtom) {
+		return value;
+	}
+
+	return [value, atom.set] as const;
 }

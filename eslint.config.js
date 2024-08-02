@@ -25,4 +25,9 @@ export default tseslint.config(
 			'**/__snapshots__/**',
 		],
 	},
+	{
+		rules: {
+			'@typescript-eslint/no-explicit-any': 'off',
+		},
+	},
 );

@@ -57,4 +57,20 @@ describe('useAtom', () => {
 			expect(result.current[0]).toBe(1);
 		});
 	});
+
+	it('should re-render a derived atom when its dependency changes', async () => {
+		// Arrange.
+		const countAtom = atom(0);
+		const doubleCountAtom = atom((get) => get(countAtom) * 2);
+
+		// Act.
+		const { result } = renderHook(() => useAtom(doubleCountAtom));
+
+		countAtom.set(1);
+
+		// Assert.
+		await waitFor(() => {
+			expect(result.current).toBe(2);
+		});
+	});
 });
