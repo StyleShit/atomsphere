@@ -1,8 +1,8 @@
-# ReAtom
+# AtomSphere
 
 An atomic state management library for React.
 
-ReAtom is very similar to [Jotai](https://jotai.org/) but with a slightly different API. It lets you create `Atoms` and use them in your React components.
+AtomSphere is very similar to [Jotai](https://jotai.org/) but with a slightly different API. It lets you create `Atoms` and use them in your React components.
 
 When using atoms, you get a fine-grained reactivity system that only updates the components that depend on the atom that changed
 (as opposed to the traditional React context system, which re-renders all the components under the context when the state changes).
@@ -14,7 +14,7 @@ You can create an atom using the `atom` function, and read it using the `useAtom
 
 ```tsx
 // Counter.tsx
-import { atom, useAtom } from 'reatom';
+import { atom, useAtom } from 'atomsphere';
 
 const countAtom = atom(0);
 
@@ -36,7 +36,7 @@ if you want, you can create your atoms in a separate file and import them in mul
 
 ```ts
 // atoms.ts
-import { atom } from 'reatom';
+import { atom } from 'atomsphere';
 
 export const countAtom = atom(0);
 export const nameAtom = atom('John Doe');
@@ -44,7 +44,7 @@ export const nameAtom = atom('John Doe');
 
 ```tsx
 // Counter.tsx
-import { useAtom } from 'reatom';
+import { useAtom } from 'atomsphere';
 import { countAtom } from './atoms';
 
 function Counter() {
@@ -61,7 +61,7 @@ function Counter() {
 
 ```tsx
 // Name.tsx
-import { useAtom } from 'reatom';
+import { useAtom } from 'atomsphere';
 import { nameAtom } from './atoms';
 
 function Name() {
@@ -76,14 +76,14 @@ function Name() {
 }
 ```
 
-ReAtom also supports derived atoms, which are atoms that depend on other atoms.
+AtomSphere also supports derived atoms, which are atoms that depend on other atoms.
 
 In order to create a derived atom, instead of passing an initial value to the `atom` function, you pass a function that calculates the value of the atom.
 You'll receive a `get` function as an argument that will allow you to get the value of other atoms:
 
 ```tsx
 // Derived.tsx
-import { atom, useAtom } from 'reatom';
+import { atom, useAtom } from 'atomsphere';
 
 const countAtom = atom(0);
 const doubleCountAtom = atom((get) => get(countAtom) * 2);
@@ -104,4 +104,4 @@ function Derived() {
 
 Each time the `countAtom` changes, the `doubleCountAtom` will be recalculated, and the components that depend on it will be updated.
 
-The dependency tracking is done automatically by ReAtom, so you don't have to worry about it.
+The dependency tracking is done automatically by AtomSphere, so you don't have to worry about it.
