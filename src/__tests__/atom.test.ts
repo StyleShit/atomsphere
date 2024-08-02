@@ -60,6 +60,21 @@ describe('atom', () => {
 		expect(subscriber).toHaveBeenCalledTimes(0);
 	});
 
+	it('should not subscribe to the same subscriber multiple times', () => {
+		// Arrange.
+		const countAtom = atom(0);
+		const subscriber = vi.fn();
+
+		// Act.
+		countAtom.subscribe(subscriber);
+		countAtom.subscribe(subscriber);
+
+		countAtom.set(1);
+
+		// Assert.
+		expect(subscriber).toHaveBeenCalledTimes(1);
+	});
+
 	it('should derive from other atoms', () => {
 		// Arrange.
 		const firstNameAtom = atom('John');
