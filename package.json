@@ -1,12 +1,12 @@
 {
-	"name": "create-typescript-package",
-	"description": "A template project for developing & publishing TypeScript packages",
+	"name": "reatom",
+	"description": "An atomic state management library for React",
 	"version": "0.0.0",
 	"author": "StyleShit",
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/StyleShit/create-typescript-package"
+		"url": "https://github.com/StyleShit/reatom"
 	},
 	"type": "module",
 	"main": "dist/index.cjs",
