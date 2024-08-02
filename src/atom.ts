@@ -1,5 +1,12 @@
-export function atom<T>(initialValue: T) {
+export type Atom<T> = {
+	get: () => T;
+	set: (newValue: T | ((prev: T) => T)) => void;
+	subscribe: (subscriber: () => void) => () => void;
+};
+
+export function atom<T>(initialValue: T): Atom<T> {
 	let value = initialValue;
+
 	const subscribers = new Set<() => void>();
 
 	const get = () => value;
