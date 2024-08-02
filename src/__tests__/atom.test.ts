@@ -21,6 +21,17 @@ describe('atom', () => {
 		expect(countAtom.get()).toBe(1);
 	});
 
+	it('should set a new value using a function', () => {
+		// Arrange.
+		const countAtom = atom(0);
+
+		// Act.
+		countAtom.set((prev) => prev + 1);
+
+		// Assert.
+		expect(countAtom.get()).toBe(1);
+	});
+
 	it('should notify subscribers', () => {
 		// Arrange.
 		const countAtom = atom(0);

@@ -4,8 +4,11 @@ export function atom<T>(initialValue: T) {
 
 	const get = () => value;
 
-	const set = (newValue: T) => {
-		value = newValue;
+	const set = (newValue: T | ((prev: T) => T)) => {
+		value =
+			typeof newValue === 'function'
+				? (newValue as (prev: T) => T)(value)
+				: newValue;
 
 		notify();
 	};
