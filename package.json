@@ -1,7 +1,7 @@
 {
 	"name": "reatom",
 	"description": "An atomic state management library for React",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"author": "StyleShit",
 	"license": "MIT",
 	"repository": {
