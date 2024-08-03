@@ -1,5 +1,11 @@
 # reatom
 
+## 0.0.2
+
+### Patch Changes
+
+- abcf083: Improve types
+
 ## 0.0.1
 
 ### Patch Changes

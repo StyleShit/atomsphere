@@ -1,5 +1,0 @@
----
-'atomsphere': patch
----
-
-Improve types
