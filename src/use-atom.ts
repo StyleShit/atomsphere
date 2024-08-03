@@ -7,13 +7,9 @@ export function useAtom<T>(
 
 export function useAtom<T>(atom: ReadableAtom<T>): ReadableAtom<T>['get'];
 
-export function useAtom<T>(atom: WritableAtom<T> | ReadableAtom<T>): any {
-	const isDerivedAtom = !('set' in atom);
+export function useAtom<T>(atom: WritableAtom<T> | ReadableAtom<T>) {
+	const isWriteableAtom = 'set' in atom;
 	const value = useSyncExternalStore(atom.subscribe, atom.get);
 
-	if (isDerivedAtom) {
-		return value;
-	}
-
-	return [value, atom.set] as const;
+	return isWriteableAtom ? [value, atom.set] : value;
 }

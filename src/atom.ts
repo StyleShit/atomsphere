@@ -7,13 +7,13 @@ export type WritableAtom<T> = ReadableAtom<T> & {
 	set: (newValue: T | ((prev: T) => T)) => void;
 };
 
-type DerivedGetter = <T>(atom: ReadableAtom<T>) => T;
+type DeriveFn<T> = (get: <P>(atom: ReadableAtom<P>) => P) => T;
 
-export function atom<T>(derive: (get: DerivedGetter) => T): ReadableAtom<T>;
+export function atom<T>(initialValue: DeriveFn<T>): ReadableAtom<T>;
 export function atom<T>(initialValue: T): WritableAtom<T>;
-export function atom<T>(initialValue: T | ((get: DerivedGetter) => T)) {
+export function atom<T>(initialValue: T | DeriveFn<T>) {
 	return typeof initialValue === 'function'
-		? createDerivedAtom(initialValue as (get: DerivedGetter) => T)
+		? createDerivedAtom(initialValue as DeriveFn<T>)
 		: createAtom(initialValue);
 }
 
@@ -40,8 +40,8 @@ function createAtom<T>(initialValue: T): WritableAtom<T> {
 	};
 
 	const notify = () => {
-		subscribers.forEach((cb) => {
-			cb();
+		subscribers.forEach((subscriber) => {
+			subscriber();
 		});
 	};
 
@@ -52,10 +52,8 @@ function createAtom<T>(initialValue: T): WritableAtom<T> {
 	};
 }
 
-function createDerivedAtom<T>(
-	derive: (get: DerivedGetter) => T,
-): ReadableAtom<T> {
-	const getAndSubscribe = <T>(atom: ReadableAtom<T>) => {
+function createDerivedAtom<T>(derive: DeriveFn<T>): ReadableAtom<T> {
+	const getAndSubscribe = <P>(atom: ReadableAtom<P>) => {
 		atom.subscribe(reCalculate);
 
 		return atom.get();

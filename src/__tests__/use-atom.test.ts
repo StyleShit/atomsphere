@@ -21,6 +21,7 @@ describe('useAtom', () => {
 
 		// Act.
 		const { result } = renderHook(() => useAtom(countAtom));
+
 		result.current[1](1);
 
 		// Assert.
@@ -35,6 +36,7 @@ describe('useAtom', () => {
 
 		// Act.
 		const { result } = renderHook(() => useAtom(countAtom));
+
 		result.current[1]((prev) => prev + 1);
 
 		// Assert.
