@@ -1,0 +1,5 @@
+---
+'atomsphere': patch
+---
+
+Publish changelog
