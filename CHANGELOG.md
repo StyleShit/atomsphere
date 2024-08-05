@@ -1,5 +1,11 @@
 # reatom
 
+## 0.0.3
+
+### Patch Changes
+
+- 51bd852: Publish changelog
+
 ## 0.0.2
 
 ### Patch Changes
