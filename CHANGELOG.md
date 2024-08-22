@@ -1,5 +1,12 @@
 # Atomsphere
 
+## 0.0.4
+
+### Patch Changes
+
+- 876fa5e: Fix types in `useAtom` hook
+- c04b01c: Improve types in `atom` function
+
 ## 0.0.3
 
 ### Patch Changes
