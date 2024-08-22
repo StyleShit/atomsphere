@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, expectTypeOf, it } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
 import { atom } from '../atom';
 import { useAtom } from '../use-atom';
@@ -74,5 +74,24 @@ describe('useAtom', () => {
 		await waitFor(() => {
 			expect(result.current).toBe(2);
 		});
+	});
+
+	it('should have proper types', () => {
+		// Arrange.
+		const countAtom = atom(0);
+		const stringCountAtom = atom((get) => String(get(countAtom)));
+
+		const { result: countResult } = renderHook(() => useAtom(countAtom));
+
+		const { result: doubleCountResult } = renderHook(() =>
+			useAtom(stringCountAtom),
+		);
+
+		// Assert.
+		expectTypeOf(countResult.current).toEqualTypeOf<
+			[number, (value: number | ((prev: number) => number)) => void]
+		>();
+
+		expectTypeOf(doubleCountResult.current).toEqualTypeOf<string>();
 	});
 });
