@@ -11,7 +11,9 @@ type DeriveFn<T> = (get: <P>(atom: ReadableAtom<P>) => P) => T;
 
 export function atom<T>(initialValue: DeriveFn<T>): ReadableAtom<T>;
 export function atom<T>(initialValue: T): WritableAtom<T>;
-export function atom<T>(initialValue: T | DeriveFn<T>) {
+export function atom<T>(
+	initialValue: T | DeriveFn<T>,
+): WritableAtom<T> | ReadableAtom<T> {
 	return typeof initialValue === 'function'
 		? createDerivedAtom(initialValue as DeriveFn<T>)
 		: createAtom(initialValue);
